@@ -41,6 +41,11 @@ end
 % Regularization Parameter Set
 Cvec = 10.^(-4:3);
 
+
+% Initialize Matrices
+pred_test_lbls = cell(length(Cvec));
+LMS_CR = zeros(length(Cvec));
+
 % Precompute Training Vector Covariance
 X=trainVectors(:,perm)*trainVectors(:,perm)';
 disp('***********************************')
@@ -54,17 +59,28 @@ for cc=1:length(Cvec)
     W = (X+ C*eye(D))\trainVectors(:,perm) * T';
     
     
-    % Classify test samples
+    % Classify Validation Samples
     OutputVal = W'*valVectors;
-    [maxOt,predLbls] = max(OutputVal);
+    [maxOt,pred_val_Lbls] = max(OutputVal);
+    
+    % Classify Testing Set
+    OutputTest = W'*testVectors;
+    [~,pred_test_lbls{cc}] = max(OutputTest);
+    
     
     % Measure Performance
-    LMS_CR(cc) = length(find(predLbls-valLbls'==0)) / length(valLbls);
+    LMS_CR(cc) = length(find(pred_val_Lbls-valLbls'==0)) / length(valLbls);
     disp(['[*] ' num2str(cc) ' of ' num2str(length(Cvec))])
 end
-disp(['C-Value: ',num2str(C),', Max Score: ',num2str(max(LMS_CR)*100),'%'])
+[score,ind] = max(LMS_CR(:));
+disp(['C-Value: ',num2str(Cvec(ind))])
+disp(['Max Score: ',num2str(score*100),'%'])
 
-
+index = 1:size(testVectors,2);
+file = fopen('submissions/testLbls_LMS.txt','w');
+fprintf(file,'%s,%s\n','ID','Label');
+fprintf(file,'%d,%d\n',[index; pred_test_lbls{ind}]);
+fclose(file);
 
 %% Kernel-based Regression
 
