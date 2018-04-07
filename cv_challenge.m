@@ -18,6 +18,7 @@ load('data/validation/valLbls.mat')
 load('data/validation/valVectors.mat')
 load('data/test/testVectors.mat')
 
+% [trainVectorsOriginal, valVectorsOriginal, testVectorsOriginal] = loadOriginalImages()
 
 [D,N] = size(trainVectors);
 [D,M] = size(valVectors);
@@ -55,13 +56,10 @@ disp(['[*] Max Score: ',num2str(nn_score*100),'%'])
 
 %% Linear Regression 
 
-% Random Permutation of Training Samples
-perm = randperm(length(trainVectors));
-
 % Label Matrix
 T = zeros(K,N);
 for n=1:K
-    T(n,trainLbls(perm)==n) = 1;
+    T(n,trainLbls==n) = 1;
 end
 
 
@@ -74,7 +72,7 @@ pred_test_lbls = cell(length(Cvec));
 LMS_CR = zeros(length(Cvec));
 
 % Precompute Training Vector Covariance
-X=trainVectors(:,perm)*trainVectors(:,perm)';
+X=trainVectors*trainVectors';
 disp('***********************************')
 disp('LMS Regression-based Classification')
 disp('[*] Optimizing over hyperparameter space...')
@@ -83,7 +81,7 @@ for cc=1:length(Cvec)
     C = Cvec(cc);
 
     % Get the Weights
-    W = (X+ C*eye(D))\trainVectors(:,perm) * T';
+    W = (X+ C*eye(D))\trainVectors * T';
     
     
     % Classify Validation Samples
@@ -184,6 +182,6 @@ fprintf(file,'%d,%d\n',[index; pred_test_lbls{Sidx,Cidx}]);
 fclose(file);
 
 
-
+%% 
 
 
