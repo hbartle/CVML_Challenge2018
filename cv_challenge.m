@@ -4,7 +4,7 @@
 % Aarhus University, 2018
 % Hannes Bartle
 %
-clear all 
+clear 
 close all
 clc
 
@@ -24,9 +24,36 @@ load('data/test/testVectors.mat')
 classes = unique(trainLbls);
 K = length(classes);
 
+%% Nearest Centroid 
+disp('***********************************')
+disp('Nearest Centroid Classification')
+[predLbls, mean_vectors] = ncClassifier(trainVectors,valVectors,trainLbls);
+nc_score = length(find(predLbls-valLbls'==0))/length(valLbls);
+disp(['[*] Max Score: ',num2str(nc_score*100),'%'])
+
+%% Nearest Subclass Centroid 
+disp('***********************************')
+disp('Nearest Subclass Centroid Classification')
+disp('[*] Optimizing over hyperparameter space...')
+K_sc = 5;
+for k=1:K_sc
+    predLbls = nscClassifier(trainVectors,valVectors,trainLbls,k);
+    nsc_sc(k) = length(find(predLbls-valLbls'==0))/length(valLbls);
+    disp(['[*]' num2str(k) ' of ' num2str(K_sc)])
+end
+[nsc_score, Kmax] = max(nsc_sc);
+disp(['[*] K: ',num2str(Kmax)])
+disp(['[*] Max Score: ',num2str(nsc_score*100),'%'])
+
+%% Nearest Neighbor 
+disp('***********************************')
+disp('Nearest Centroid Classification')
+predLbls = nnClassifier(trainVectors,valVectors,trainLbls);
+nn_score = length(find(predLbls-valLbls'==0))/length(valLbls);
+disp(['[*] Max Score: ',num2str(nn_score*100),'%'])
+
+
 %% Linear Regression 
-
-
 
 % Random Permutation of Training Samples
 perm = randperm(length(trainVectors));
@@ -157,6 +184,6 @@ fprintf(file,'%d,%d\n',[index; pred_test_lbls{Sidx,Cidx}]);
 fclose(file);
 
 
-%% Linear SVM
 
-%% Kernel-based SVM
+
+
