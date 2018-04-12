@@ -9,8 +9,6 @@ end
 Cvec = 0.18:0.01:0.2;
 Svec = 0.5:0.1:0.6;
 
-
-
 disp('***********************************')
 disp('RBF-Kernel-Regression-based Classification')
 
@@ -49,7 +47,7 @@ for ss=1:length(Svec)
         
         % Kernel Matrix of Testing Set
         Ktest = exp(-Gtest/(S*sigma_test));
-        % Classify Validation Set
+        % Classify Testing Set
         OutputTest = A'*Ktest;
         [~,pred_test_lbls{ss,cc}] = max(OutputTest);
         
@@ -66,9 +64,11 @@ disp(['C-Value: ',num2str(Cvec(Cidx)),', S-Value: ',num2str(Svec(Sidx))])
 disp(['Max Score: ',num2str(score*100),'%'])
 
 index = 1:size(testVectors,2);
-file = fopen('submissions/testLbls_KR.txt','w');
+file = fopen('submissions/testLbls_rbfreg.txt','w');
 fprintf(file,'%s,%s\n','ID','Label');
 fprintf(file,'%d,%d\n',[index; pred_test_lbls{Sidx,Cidx}]);
 fclose(file);
+disp('[*] Done!')
+
 end
 
