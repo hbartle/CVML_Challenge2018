@@ -69,7 +69,22 @@ end
 disp('Done!')
 
 %% SIFT Feature extraction
-% for i=1:numTrainImages
-%     [f, d] = vl_sift(single(trainImagesOriginal{i}));
-%     trainVectorsSIFT{i} = d;
-% end
+
+for i=1:numTrainImages
+    [f, d] = vl_sift(single(trainImagesOriginal(:,:,i)));
+    trainVectorsSIFT{i} = d;
+end
+for i=1:numValImages
+    [f, d] = vl_sift(single(valImagesOriginal(:,:,i)));
+    valVectorsSIFT{i} = d;
+end
+for i=1:numTestImages
+    [f, d] = vl_sift(single(testImagesOriginal(:,:,i)));
+    testVectorsSIFT{i} = d;
+end
+
+%% Safe the Features 
+save('data/train/trainVectorsSIFT.mat','trainVectorsSIFT')
+save('data/validation/valVectorsSIFT.mat','valVectorsSIFT')
+save('data/test/testVectorsSIFT.mat','testVectorsSIFT')
+
