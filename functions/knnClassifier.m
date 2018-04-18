@@ -1,4 +1,4 @@
-function [ score_nn ] = nnClassifier(trainVectors,trainLbls,valVectors, valLbls,testVectors)
+function [ score_nn ] = knnClassifier(trainVectors,trainLbls,valVectors, valLbls,testVectors,K)
 %NN_CLASSIFY Nearest Neighborhood Classifier
 
 disp('***********************************')
@@ -12,8 +12,8 @@ for i=1:N
     for k =1:M
         d(k) = norm(valVectors(:,i) - trainVectors(:,k))^2;
     end
-    [~,pred_val_lbls(i)] = min(d);
-    pred_val_lbls(i) = trainLbls(pred_val_lbls(i));
+    [~,neighbor] = sort(d);    
+    pred_val_lbls(i) = mode(trainLbls(neighbor(1:K)));
 end
 score_nn = length(find(pred_val_lbls-valLbls'==0))/length(valLbls);
 disp(['[*] Max Score: ',num2str(score_nn*100),'%'])
