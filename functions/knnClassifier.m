@@ -2,7 +2,7 @@ function [ score_nn ] = knnClassifier(trainVectors,trainLbls,valVectors, valLbls
 %NN_CLASSIFY Nearest Neighborhood Classifier
 
 disp('***********************************')
-disp('Nearest Centroid Classification')
+disp('K-Nearest Neighbor Classification')
 disp('[*] Validation Set...')
 % Classify the test images
 [~,N] = size(valVectors);

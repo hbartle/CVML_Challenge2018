@@ -5,7 +5,7 @@ disp('Nearest Subclass Centroid Classification')
 disp('[*] Optimizing over hyperparameter space...')
 
 number_of_classes = 29;
-K = 1;
+K = 4;
 
 for c=1:K
     subclass_mean = cell(1,number_of_classes);

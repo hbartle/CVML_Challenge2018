@@ -17,6 +17,7 @@ LMS_CR = zeros(length(Cvec));
 
 % Precompute Training Vector Covariance
 X=trainVectors*trainVectors';
+D = size(X,1);
 disp('***********************************')
 disp('LMS Regression-based Classification')
 disp('[*] Optimizing over hyperparameter space...')

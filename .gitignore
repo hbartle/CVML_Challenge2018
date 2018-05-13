@@ -1,5 +1,7 @@
 data/
 lib/
 submissions/
+plots/
 *~
 literature/
+*.mat
