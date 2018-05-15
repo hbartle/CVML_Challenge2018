@@ -41,9 +41,25 @@ set(gca,'FontSize',FontSize);
 ylabel('Success Rate [%]','FontSize',FontSize)
 grid on
 
-
+fig_hog_features = figure('units','normalized','outerposition',[0 0 1 1]);
+y = [score_nc_hog;...
+     score_nsc_hog;...
+     score_knn_hog10;...
+     score_linreg_hog;...
+     score_rbfreg_hog;...
+     score_svm_hog;...
+     score_mlp_hog]*100;
+c = {'NC','NSC','KNN','LIN','RBF','SVM','MLP'};
+bar(y)
+barvalues;
+ylim([0 110]);
+set(gca,'xticklabel',c)
+set(gca,'FontSize',FontSize);
+ylabel('Success Rate [%]','FontSize',FontSize)
+grid on
 
 %%
 mkdir('plots')
 print(fig_cnn_features, 'plots/cnn_features_success','-depsc');
 print(fig_sift_features, 'plots/sift_features_success','-depsc');
+print(fig_hog_features, 'plots/hog_features_success','-depsc');

@@ -1,13 +1,11 @@
-function [score] = rbfRegression(trainVectors,trainLbls,valVectors,valLbls,testVectors,K,N)
+function [score] = rbfRegression(trainVectors,trainLbls,valVectors,valLbls,testVectors,K,N,Cvec,Svec)
 % Label Matrix
 T = zeros(K,N);
 for n=1:K
     T(n,trainLbls==n) = 1;
 end
 
-% Hyperparameter  Set
-Cvec = 0.18:0.01:0.2;
-Svec = 0.5:0.1:0.6;
+
 
 disp('***********************************')
 disp('RBF-Kernel-Regression-based Classification')
